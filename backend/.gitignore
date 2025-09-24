@@ -1,0 +1,8 @@
+# This tells Git to ignore our secret keys
+.env
+
+# This tells Git to ignore the huge node_modules folder
+/node_modules
+
+# You can also add other common files to ignore
+*.log
