@@ -1,0 +1,68 @@
+/* src/pages/GiftFinderPage.css */
+.age-gate-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  text-align: center;
+}
+
+.age-form {
+  background: #fff;
+  padding: 3rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.age-form h1 {
+  margin-bottom: 0.5rem;
+}
+
+.age-form p {
+  margin-bottom: 2rem;
+  color: #666;
+}
+
+.age-input {
+  font-size: 1.5rem;
+  padding: 10px;
+  width: 100px;
+  text-align: center;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+}
+
+.age-submit-btn {
+  display: block;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 1rem;
+  font-size: 1.2rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Add this to the end of GiftFinderPage.css */
+.search-type-selector {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.search-type-selector button {
+  flex: 1;
+  padding: 0.8rem;
+  border: none;
+  background: #f0f0f0;
+  cursor: pointer;
+  font-size: 1rem;
+}
+.search-type-selector button.active {
+  background: #007bff;
+  color: white;
+}

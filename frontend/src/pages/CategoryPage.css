@@ -1,0 +1,43 @@
+
+.page-container-with-sidebar {
+  display: grid;
+  grid-template-columns: 280px 1fr; /* Sidebar width and main content */
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+.main-content-wrapper {
+  width: 100%;
+}
+
+.category-page-title {
+  text-align: left;
+  margin-bottom: 2rem;
+  font-size: 2.5rem;
+  color: #333;
+  text-transform: capitalize;
+}
+
+/* Make layout responsive for mobile */
+@media (max-width: 768px) {
+  .page-container-with-sidebar {
+    grid-template-columns: 1fr; /* Stack sidebar on top of content */
+  }
+}
+
+/* --- FINAL MOBILE-FRIENDLINESS POLISH --- */
+
+/* This targets screens smaller than 768px (phones) */
+@media (max-width: 768px) {
+  .page-container-with-sidebar {
+    /* Change the two-column grid into a single column */
+    grid-template-columns: 1fr;
+  }
+
+  .category-page-title {
+    font-size: 2rem; /* Make titles a bit smaller on mobile */
+    text-align: center;
+  }
+}
