@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const sgMail = require('@sendgrid/mail');
 const nodemailer = require('nodemailer'); 
 require('dotenv').config();
 
@@ -63,7 +64,7 @@ const transporter = nodemailer.createTransport({
 });
 
 
-
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 
 
@@ -147,25 +148,20 @@ app.post('/api/product-requests', async (req, res) => {
     try {
         const { productName } = req.body;
         if (!productName) return res.status(400).json({ message: "Product name is required." });
-        
         const newRequest = new ProductRequest({ requestedProductName: productName });
         await newRequest.save();
 
         if (process.env.ADMIN_EMAIL) {
-            const mailOptions = {
-                from: process.env.EMAIL_USER,
+            const msg = {
                 to: process.env.ADMIN_EMAIL,
+                from: process.env.EMAIL_USER, // Use the verified email from SendGrid
                 subject: `New Product Request: ${productName}`,
-                text: `A customer has requested the following product: "${productName}"\n\nYou can view all requests in your admin panel.`
+                text: `A customer requested: "${productName}"`
             };
-            transporter.sendMail(mailOptions);
+            sgMail.send(msg).catch(error => console.error("SendGrid Error:", error.response.body));
         }
-        
-        res.status(201).json({ message: "Request received successfully!" });
-    } catch (error) {
-        console.error("Error saving product request:", error);
-        res.status(500).json({ message: "Failed to save request." });
-    }
+        res.status(201).json({ message: "Request received!" });
+    } catch (error) { res.status(500).json({ message: "Failed to save request." }); }
 });
 
 
@@ -191,25 +187,16 @@ app.post('/api/orders', async (req, res) => {
         
      
         if (process.env.ADMIN_EMAIL) {
-            const mailOptions = {
-                from: process.env.EMAIL_USER,
+            const msg = {
                 to: process.env.ADMIN_EMAIL,
+                from: process.env.EMAIL_USER, // Use the verified email from SendGrid
                 subject: `New Order Received! - #${createdOrder._id.toString().slice(-6)}`,
-                text: `A new order has been placed by ${createdOrder.customerName} for a total of ₹${createdOrder.totalAmount}.\n\nView it in your admin panel.`
+                text: `A new order has been placed by ${createdOrder.customerName}.`
             };
-            transporter.sendMail(mailOptions, (error, info) => {
-                if (error) {
-                    console.error("Error sending email:", error); 
-                }
-            });
+            sgMail.send(msg).catch(error => console.error("SendGrid Error:", error.response.body));
         }
-        
-        res.status(201).json({ message: 'Order created successfully!', order: createdOrder });
-
-    } catch (error) {
-        console.error("Error creating order:", error);
-        res.status(500).json({ message: 'Failed to create order.' });
-    }
+        res.status(201).json({ message: 'Order created!', order: createdOrder });
+    } catch (error) { res.status(500).json({ message: 'Failed to create order.' }); }
 });
 
 
